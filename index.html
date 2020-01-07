@@ -11,30 +11,14 @@
 <div class="container mt-2">
     <div class="row justify-content-md-center">
         <div id="CurrencyCalculator">
-            <p class="font-weight-bold">Дата курсов: &nbsp;{{date}} USD - {{cbr_usd_rate}}; EUR - {{cbr_eur_rate}}</p>
-            <p>Указать курсы вручную <input type="checkbox" id="checkbox" v-model="isHandMadeRates"></p>
+            <p>Paste excel data here:</p>
+            <textarea name="excel_data" v-model="textArea"></textarea><br>
+            <input type="button" @click="generateTable()" value="Genereate Table"/>
+            <br><br>
+            <p>Table data will appear below {{rate}}</p>
+            <hr>
+            <div id="excel_table"></div>
 
-            <p v-show="isHandMadeRates">
-                <span :class="{'text-danger': isInvalid_hand_usd_rate}">USD: <input v-model="hand_usd_rate"></span>
-                <span :class="{'text-danger': isInvalid_hand_eur_rate}">EUR: <input v-model="hand_eur_rate"></span>
-            </p>
-
-            <p>
-                Раходы в USD:
-                <input v-model="usd_charges">
-            </p>
-            <p>
-                Раходы в EUR:
-                <input v-model="eur_charges">
-            </p>
-            <p>
-                Раходы в RUB:
-                <input v-model="rub_charges">
-            </p>
-            <p class="font-weight-bold"> Таможенная стоимость: {{ result }}
-                <span v-show="isHandMadeRates">*</span>
-            </p>
-            <span v-show="isHandMadeRates">* Расчет таможенной стоимости ведется по курсам заданным вручную!</span>
         </div>
     </div>
 </div>
@@ -47,6 +31,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script src="https://unpkg.com/vue"></script>
+<script  src = " https://unpkg.com/axios/dist/axios.min.js "></script >
 <script src="js/currencyCalculation.js"></script>
 </body>
 </html>

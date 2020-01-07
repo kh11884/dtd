@@ -5,7 +5,7 @@ function moneyFormat(n) {
 var CurrencyCalculator = new Vue({
     el: '#CurrencyCalculator',
     data: {
-        hand_usd_rate: 0,
+        rate: 0,
         hand_eur_rate: 0,
         cbr_usd_rate: 0,
         cbr_eur_rate: 0,
@@ -13,7 +13,8 @@ var CurrencyCalculator = new Vue({
         eur_charges: "",
         rub_charges: "",
         date: "!!! Курсы валют не загрузились. Проверь курсы!!!",
-        isHandMadeRates: false
+        isHandMadeRates: false,
+        textArea: null
     },
     computed: {
         result: function () {
@@ -37,16 +38,31 @@ var CurrencyCalculator = new Vue({
         isInvalid_hand_eur_rate: function () {
             return this.hand_eur_rate === "";
         }
+    },
+    methods: {
+          generateTable: function(){
+          var rows = this.textArea.split("\n");
+          console.log(rows);
+          }
+        }
+});
+
+function generateTable() {
+    var data = $('textarea[name=excel_data]').val();
+    console.log(data);
+    var rows = data.split("\n");
+
+    var table = $('<table />');
+
+    for(var y in rows) {
+    var cells = rows[y].split("\t");
+    var row = $('<tr />');
+    for(var x in cells) {
+        row.append('<td>'+cells[x]+'</td>');
     }
-});
+    table.append(row);
+}
 
-var options = {year: 'numeric', month: 'short', day: 'numeric'};
-
-$.getJSON("https://www.cbr-xml-daily.ru/daily_json.js", function (data) {
-    CurrencyCalculator.cbr_usd_rate = data.Valute.USD.Value;
-    CurrencyCalculator.cbr_eur_rate = data.Valute.EUR.Value;
-    console.log(data.Date);
-    CurrencyCalculator.date = data.Date.substring(0, 10);
-    CurrencyCalculator.hand_usd_rate = CurrencyCalculator.cbr_usd_rate;
-    CurrencyCalculator.hand_eur_rate = CurrencyCalculator.cbr_eur_rate;
-});
+// Insert into DOM
+$('#excel_table').html(table);
+}
